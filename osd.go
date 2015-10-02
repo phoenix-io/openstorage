@@ -89,6 +89,12 @@ func start(c *cli.Context) {
 			fmt.Println("Unable to start volume plugin: ", err)
 			return
 		}
+
+		err = apiserver.StartPluginMgmntAPI(d, config.PluginAPIBase)
+		if err != nil {
+			fmt.Println("Unable to start volume plugin Mgr : ", err)
+			return
+		}
 	}
 
 	// Daemon does not exit.
