@@ -62,7 +62,7 @@ func startServer(name string, sockBase string, port int, routes []*Route) error 
 	socket := path.Join(sockBase, name+".sock")
 	os.Remove(socket)
 	os.MkdirAll(path.Dir(socket), 0755)
-
+	log.SetLevel(log.DebugLevel)
 	log.Printf("Starting REST service on %+v", socket)
 	listener, err = net.Listen("unix", socket)
 	if err != nil {
@@ -89,5 +89,12 @@ func StartServerAPI(name string, port int, restBase string) error {
 // Linux container engine.
 func StartPluginAPI(name string, pluginBase string) error {
 	rest := newVolumePlugin(name)
+	return startServer(name, pluginBase, 0, rest.Routes())
+}
+
+// StartPluginMgmntAPI starts a REST server to receive volume mgmnt commands from the
+// Linux container engine.
+func StartPluginMgmntAPI(name string, pluginBase string) error {
+	rest := newVolumePluginMgr(name) // newVolumeMgmntPlugin(name)
 	return startServer(name, pluginBase, 0, rest.Routes())
 }
