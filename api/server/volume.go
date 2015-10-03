@@ -56,6 +56,7 @@ func (vd *volApi) create(w http.ResponseWriter, r *http.Request) {
 		notFound(w, r)
 		return
 	}
+	fmt.Println("Create Params", dcReq.Locator, dcReq.Options, dcReq.Spec)
 	ID, err := d.Create(dcReq.Locator, dcReq.Options, dcReq.Spec)
 	dcRes.VolumeResponse = api.VolumeResponse{Error: responseStatus(err)}
 	dcRes.ID = ID
